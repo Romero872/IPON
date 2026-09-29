@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Ipon Tracker</title>
+
+    <meta name="theme-color" content="#2196f3">
+    <meta name="description" content="Simple Philippine Peso savings tracker">
+
+    <link rel="manifest" href="manifest.json">
 
     <style>
         * {
@@ -15,26 +21,27 @@
 
         body {
             background: #f4f6f8;
+            color: #222;
             min-height: 100vh;
             padding: 20px;
-            color: #222;
         }
 
         .container {
+            width: 100%;
             max-width: 500px;
             margin: auto;
         }
 
-        .header {
+        header {
             text-align: center;
             margin-bottom: 20px;
         }
 
-        .header h1 {
-            font-size: 28px;
+        header h1 {
+            font-size: 30px;
         }
 
-        .header p {
+        header p {
             color: #777;
             margin-top: 5px;
         }
@@ -44,19 +51,19 @@
             border-radius: 18px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            box-shadow: 0 5px 20px rgba(0,0,0,.07);
         }
 
-        .progress-info {
+        .progress-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
         }
 
         .percent {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: bold;
+            margin-top: 4px;
         }
 
         .saved {
@@ -70,37 +77,43 @@
         .saved strong {
             display: block;
             font-size: 20px;
+            margin-top: 3px;
         }
 
         .progress-bar {
-            width: 100%;
             height: 15px;
             background: #e5e5e5;
             border-radius: 20px;
+            margin-top: 15px;
             overflow: hidden;
         }
 
         .progress {
-            height: 100%;
             width: 0%;
+            height: 100%;
             background: #2196f3;
             border-radius: 20px;
-            transition: 0.3s;
+            transition: .3s;
         }
 
         .remaining {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            gap: 10px;
             color: #777;
-            font-size: 14px;
+            font-size: 13px;
+            margin-top: 9px;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
-        .input-group label {
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
             display: block;
             font-weight: bold;
             margin-bottom: 7px;
@@ -111,21 +124,20 @@
             align-items: center;
             border: 1px solid #ddd;
             border-radius: 12px;
-            overflow: hidden;
             background: #fafafa;
         }
 
         .peso {
-            padding-left: 12px;
+            padding-left: 13px;
             font-weight: bold;
         }
 
         input {
             width: 100%;
-            padding: 13px;
             border: none;
             outline: none;
             background: transparent;
+            padding: 13px;
             font-size: 16px;
         }
 
@@ -138,46 +150,25 @@
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            text-align: center;
+            gap: 12px;
         }
 
         .stat {
             background: #f7f7f7;
-            border-radius: 12px;
+            border-radius: 13px;
             padding: 15px 8px;
+            text-align: center;
         }
 
         .stat span {
             display: block;
             color: #777;
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-size: 12px;
+            margin-bottom: 6px;
         }
 
         .stat strong {
-            font-size: 18px;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .add-btn {
-            background: #2196f3;
-            color: white;
-        }
-
-        .reset-btn {
-            background: #eee;
-            color: #333;
+            font-size: 17px;
         }
 
         .message {
@@ -187,7 +178,32 @@
             font-size: 14px;
         }
 
-        @media (max-width: 400px) {
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 13px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .add {
+            background: #2196f3;
+            color: white;
+        }
+
+        .reset {
+            background: #e9e9e9;
+            color: #333;
+        }
+
+        @media(max-width: 380px) {
+            .remaining {
+                flex-direction: column;
+            }
+
             .stats {
                 grid-template-columns: 1fr;
             }
@@ -199,15 +215,14 @@
 
 <div class="container">
 
-    <div class="header">
+    <header>
         <h1>💰 Ipon Tracker</h1>
-        <p>Track your savings goal</p>
-    </div>
+        <p>Build your savings goal</p>
+    </header>
 
-    <!-- PROGRESS -->
-    <div class="card">
+    <section class="card">
 
-        <div class="progress-info">
+        <div class="progress-top">
 
             <div>
                 <small>Progress</small>
@@ -230,71 +245,80 @@
             <span id="targetDisplay">Target: ₱2,500</span>
         </div>
 
-    </div>
+    </section>
 
 
-    <!-- SETTINGS -->
-    <div class="card">
+    <section class="card">
 
         <div class="input-group">
+
             <label>🎯 Target Amount</label>
 
             <div class="input-box">
                 <span class="peso">₱</span>
+
                 <input
-                    type="number"
                     id="target"
-                    value="2500"
+                    type="number"
                     min="1"
+                    value="2500"
                 >
             </div>
+
         </div>
 
 
         <div class="input-group">
+
             <label>💰 Naiipon Na</label>
 
             <div class="input-box">
                 <span class="peso">₱</span>
+
                 <input
-                    type="number"
                     id="saved"
-                    value="0"
+                    type="number"
                     min="0"
+                    value="0"
                 >
             </div>
+
         </div>
 
 
         <div class="input-group">
+
             <label>📅 Hulog Kada Araw</label>
 
             <div class="input-box">
                 <span class="peso">₱</span>
+
                 <input
-                    type="number"
                     id="daily"
-                    value="50"
+                    type="number"
                     min="0"
+                    value="50"
                 >
             </div>
+
         </div>
 
 
         <div class="input-group">
-            <label>🏁 Kailan Dapat Matapos?</label>
+
+            <label>🏁 Target Date</label>
 
             <input
-                type="date"
                 id="targetDate"
+                type="date"
             >
+
         </div>
 
-    </div>
+    </section>
 
 
-    <!-- STATISTICS -->
-    <div class="card">
+    <section class="card">
 
         <div class="stats">
 
@@ -310,12 +334,12 @@
 
             <div class="stat">
                 <span>Estimated Finish</span>
-                <strong id="finish">-</strong>
+                <strong id="finish">—</strong>
             </div>
 
             <div class="stat">
                 <span>Days Left</span>
-                <strong id="daysLeft">-</strong>
+                <strong id="daysLeft">—</strong>
             </div>
 
         </div>
@@ -324,16 +348,14 @@
             Keep going! 💪
         </div>
 
-    </div>
+    </section>
 
 
-    <!-- BUTTONS -->
-
-    <button class="add-btn" onclick="addSavings()">
+    <button class="add" id="addButton">
         + Add Today's Hulóg
     </button>
 
-    <button class="reset-btn" onclick="resetSavings()">
+    <button class="reset" id="resetButton">
         Reset
     </button>
 
@@ -342,313 +364,318 @@
 
 <script>
 
-    const targetInput = document.getElementById("target");
-    const savedInput = document.getElementById("saved");
-    const dailyInput = document.getElementById("daily");
-    const dateInput = document.getElementById("targetDate");
+const targetInput = document.getElementById("target");
+const savedInput = document.getElementById("saved");
+const dailyInput = document.getElementById("daily");
+const dateInput = document.getElementById("targetDate");
 
 
-    // Default target date = 30 days from today
-    const today = new Date();
+function peso(number) {
 
-    const defaultDate = new Date();
-    defaultDate.setDate(today.getDate() + 30);
+    return "₱" + Number(number).toLocaleString("en-PH", {
+        maximumFractionDigits: 0
+    });
 
-    dateInput.value = formatDate(defaultDate);
-
-
-    function formatDate(date) {
-
-        const year = date.getFullYear();
-
-        const month = String(
-            date.getMonth() + 1
-        ).padStart(2, "0");
-
-        const day = String(
-            date.getDate()
-        ).padStart(2, "0");
-
-        return `${year}-${month}-${day}`;
-    }
+}
 
 
-    function peso(amount) {
+function formatDate(date) {
 
-        return "₱" + Math.max(0, amount)
-            .toLocaleString("en-PH", {
-                maximumFractionDigits: 0
-            });
+    const year = date.getFullYear();
 
-    }
+    const month = String(
+        date.getMonth() + 1
+    ).padStart(2, "0");
 
+    const day = String(
+        date.getDate()
+    ).padStart(2, "0");
 
-    function updateTracker() {
+    return `${year}-${month}-${day}`;
 
-        let target = Number(targetInput.value);
-        let saved = Number(savedInput.value);
-        let daily = Number(dailyInput.value);
-
-
-        if (target < 1 || isNaN(target)) {
-            target = 1;
-        }
-
-        if (saved < 0 || isNaN(saved)) {
-            saved = 0;
-        }
-
-        if (daily < 0 || isNaN(daily)) {
-            daily = 0;
-        }
+}
 
 
-        // Progress
-        let percentage = (saved / target) * 100;
+function setDefaultDate() {
 
-        if (percentage > 100) {
-            percentage = 100;
-        }
+    const date = new Date();
+
+    date.setDate(
+        date.getDate() + 30
+    );
+
+    dateInput.value =
+        formatDate(date);
+
+}
 
 
-        const remaining = Math.max(
+function updateTracker() {
+
+    let target =
+        Math.max(
+            1,
+            Number(targetInput.value) || 1
+        );
+
+    let saved =
+        Math.max(
+            0,
+            Number(savedInput.value) || 0
+        );
+
+    let daily =
+        Math.max(
+            0,
+            Number(dailyInput.value) || 0
+        );
+
+
+    const percentage =
+        Math.min(
+            100,
+            (saved / target) * 100
+        );
+
+
+    const remaining =
+        Math.max(
             0,
             target - saved
         );
 
 
-        document.getElementById("percent")
+    document.getElementById("percent")
+        .textContent =
+        percentage.toFixed(1) + "%";
+
+
+    document.getElementById("progress")
+        .style.width =
+        percentage + "%";
+
+
+    document.getElementById("savedDisplay")
+        .textContent =
+        peso(saved);
+
+
+    document.getElementById("targetDisplay")
+        .textContent =
+        "Target: " + peso(target);
+
+
+    document.getElementById("remaining")
+        .textContent =
+        peso(remaining) + " remaining";
+
+
+    document.getElementById("need")
+        .textContent =
+        peso(remaining);
+
+
+    if (remaining === 0) {
+
+        document.getElementById("days")
             .textContent =
-            percentage.toFixed(1) + "%";
+            "Done!";
 
-
-        document.getElementById("progress")
-            .style.width =
-            percentage + "%";
-
-
-        document.getElementById("savedDisplay")
+        document.getElementById("finish")
             .textContent =
-            peso(saved);
-
-
-        document.getElementById("remaining")
-            .textContent =
-            peso(remaining) + " remaining";
-
-
-        document.getElementById("targetDisplay")
-            .textContent =
-            "Target: " + peso(target);
-
-
-        document.getElementById("need")
-            .textContent =
-            peso(remaining);
-
-
-        // Estimated days
-        if (remaining <= 0) {
-
-            document.getElementById("days")
-                .textContent = "Done!";
-
-            document.getElementById("finish")
-                .textContent = "Goal Reached 🎉";
-
-        }
-
-        else if (daily > 0) {
-
-            const daysNeeded =
-                Math.ceil(remaining / daily);
-
-
-            document.getElementById("days")
-                .textContent =
-                daysNeeded + " days";
-
-
-            const finishDate = new Date();
-
-            finishDate.setDate(
-                finishDate.getDate() + daysNeeded
-            );
-
-
-            document.getElementById("finish")
-                .textContent =
-                finishDate.toLocaleDateString(
-                    "en-PH",
-                    {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric"
-                    }
-                );
-
-        }
-
-        else {
-
-            document.getElementById("days")
-                .textContent = "—";
-
-            document.getElementById("finish")
-                .textContent = "—";
-
-        }
-
-
-        // Days until selected target date
-
-        if (dateInput.value) {
-
-            const selectedDate =
-                new Date(
-                    dateInput.value + "T00:00:00"
-                );
-
-            const current =
-                new Date();
-
-            current.setHours(
-                0, 0, 0, 0
-            );
-
-
-            const difference =
-                selectedDate - current;
-
-
-            const daysLeft =
-                Math.ceil(
-                    difference /
-                    (1000 * 60 * 60 * 24)
-                );
-
-
-            if (daysLeft >= 0) {
-
-                document.getElementById("daysLeft")
-                    .textContent =
-                    daysLeft + " days";
-
-            }
-
-            else {
-
-                document.getElementById("daysLeft")
-                    .textContent =
-                    "Past date";
-
-            }
-
-        }
-
-
-        // Message
-
-        if (saved >= target) {
-
-            document.getElementById("message")
-                .textContent =
-                "🎉 Naabot mo na ang savings goal!";
-
-        }
-
-        else if (daily > 0) {
-
-            document.getElementById("message")
-                .textContent =
-                "Keep going! " +
-                peso(remaining) +
-                " pa ang kailangan. 💪";
-
-        }
-
-        else {
-
-            document.getElementById("message")
-                .textContent =
-                "Maglagay ng daily hulog para makita ang estimated finish.";
-
-        }
+            "Goal Reached 🎉";
 
     }
 
+    else if (daily > 0) {
 
-    // Add daily savings
-
-    function addSavings() {
-
-        let saved =
-            Number(savedInput.value) || 0;
-
-        let daily =
-            Number(dailyInput.value) || 0;
+        const estimatedDays =
+            Math.ceil(
+                remaining / daily
+            );
 
 
-        saved += daily;
-
-        savedInput.value = saved;
-
-        updateTracker();
-
-    }
+        document.getElementById("days")
+            .textContent =
+            estimatedDays + " days";
 
 
-    // Reset
+        const finishDate =
+            new Date();
 
-    function resetSavings() {
-
-        targetInput.value = 2500;
-
-        savedInput.value = 0;
-
-        dailyInput.value = 50;
-
-
-        const newDate = new Date();
-
-        newDate.setDate(
-            newDate.getDate() + 30
+        finishDate.setDate(
+            finishDate.getDate() +
+            estimatedDays
         );
 
-        dateInput.value =
-            formatDate(newDate);
 
+        document.getElementById("finish")
+            .textContent =
+            finishDate.toLocaleDateString(
+                "en-PH",
+                {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric"
+                }
+            );
 
-        updateTracker();
+    }
+
+    else {
+
+        document.getElementById("days")
+            .textContent =
+            "—";
+
+        document.getElementById("finish")
+            .textContent =
+            "—";
 
     }
 
 
-    // Update whenever input changes
+    if (dateInput.value) {
 
-    targetInput.addEventListener(
-        "input",
-        updateTracker
+        const targetDate =
+            new Date(
+                dateInput.value +
+                "T00:00:00"
+            );
+
+
+        const today =
+            new Date();
+
+        today.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        const difference =
+            targetDate - today;
+
+
+        const daysLeft =
+            Math.ceil(
+                difference /
+                86400000
+            );
+
+
+        document.getElementById("daysLeft")
+            .textContent =
+            daysLeft >= 0
+                ? daysLeft + " days"
+                : "Past date";
+
+    }
+
+
+    if (saved >= target) {
+
+        document.getElementById("message")
+            .textContent =
+            "🎉 Naabot mo na ang savings goal!";
+
+    }
+
+    else {
+
+        document.getElementById("message")
+            .textContent =
+            "Keep going! " +
+            peso(remaining) +
+            " pa ang kailangan. 💪";
+
+    }
+
+}
+
+
+targetInput.addEventListener(
+    "input",
+    updateTracker
+);
+
+savedInput.addEventListener(
+    "input",
+    updateTracker
+);
+
+dailyInput.addEventListener(
+    "input",
+    updateTracker
+);
+
+dateInput.addEventListener(
+    "input",
+    updateTracker
+);
+
+
+document.getElementById(
+    "addButton"
+).addEventListener(
+    "click",
+    function() {
+
+        const current =
+            Number(savedInput.value) || 0;
+
+        const daily =
+            Number(dailyInput.value) || 0;
+
+        savedInput.value =
+            current + daily;
+
+        updateTracker();
+
+    }
+);
+
+
+document.getElementById(
+    "resetButton"
+).addEventListener(
+    "click",
+    function() {
+
+        targetInput.value = 2500;
+        savedInput.value = 0;
+        dailyInput.value = 50;
+
+        setDefaultDate();
+
+        updateTracker();
+
+    }
+);
+
+
+// Register service worker
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        function() {
+
+            navigator.serviceWorker.register(
+                "service-worker.js"
+            );
+
+        }
     );
 
-    savedInput.addEventListener(
-        "input",
-        updateTracker
-    );
-
-    dailyInput.addEventListener(
-        "input",
-        updateTracker
-    );
-
-    dateInput.addEventListener(
-        "input",
-        updateTracker
-    );
+}
 
 
-    // Start
-    updateTracker();
+setDefaultDate();
+updateTracker();
 
 </script>
 
